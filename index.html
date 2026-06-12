@@ -399,7 +399,7 @@ Analizując ich:
   </div>
 </article>
 
-<div class="tabs" role="tablist" style="margin-top:8px">
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab on" data-panel="p1"><span class="tn">Moduł 1</span><span class="tk">Marka osobista</span><span class="th">UVP · bio · konkurencja</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Moduł 2</span><span class="tk">Treści z AI</span><span class="th">7 postów · newsletter · Reels</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Moduł 3</span><span class="tk">Wideo</span><span class="th">VEED.IO · Flow · ElevenLabs</span></button>
@@ -563,7 +563,7 @@ Na koniec: konspekt karuzeli (8 slajdów) na ten sam temat — tytuł + 1 zdanie
   </div>
 </article>
 
-<div class="tabs" role="tablist" style="margin-top:8px">
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Moduł 1</span><span class="tk">Marka osobista</span><span class="th">UVP · bio · konkurencja</span></button>
   <button class="tab on" data-panel="p2"><span class="tn">Moduł 2</span><span class="tk">Treści z AI</span><span class="th">7 postów · newsletter · Reels</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Moduł 3</span><span class="tk">Wideo</span><span class="th">VEED.IO · Flow · ElevenLabs</span></button>
@@ -653,7 +653,7 @@ Then generate: I will use this for Flow (Google Veo 2).</pre>
   </div>
 </article>
 
-<div class="tabs" role="tablist" style="margin-top:8px">
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Moduł 1</span><span class="tk">Marka osobista</span><span class="th">UVP · bio · konkurencja</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Moduł 2</span><span class="tk">Treści z AI</span><span class="th">7 postów · newsletter · Reels</span></button>
   <button class="tab on" data-panel="p3"><span class="tn">Moduł 3</span><span class="tk">Wideo</span><span class="th">VEED.IO · Flow · ElevenLabs</span></button>
@@ -764,7 +764,7 @@ Format: vertical 1080×1350px. No gradients. Professional, clean, minimal.</pre>
   </div>
 </section>
 
-<div class="tabs" role="tablist" style="margin-top:8px">
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Moduł 1</span><span class="tk">Marka osobista</span><span class="th">UVP · bio · konkurencja</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Moduł 2</span><span class="tk">Treści z AI</span><span class="th">7 postów · newsletter · Reels</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Moduł 3</span><span class="tk">Wideo</span><span class="th">VEED.IO · Flow · ElevenLabs</span></button>
@@ -841,7 +841,7 @@ tabs.forEach(function(tab){
     document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on")});
     tabs.forEach(function(t){if(t.dataset.panel===target)t.classList.add("on")});
     document.getElementById(target).classList.add("on");
-    window.scrollTo({top:0,behavior:"smooth"});
+    if(tab.closest(".tabs-bottom"))window.scrollTo({top:0,behavior:"smooth"});
   });
 });
 
