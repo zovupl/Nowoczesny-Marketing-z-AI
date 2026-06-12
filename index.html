@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nowoczesny Marketing z AI — Ćwiczenia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c0f0d;--paper:#f7f5f0;--card:#fff;--orange:#ff7e00;--os:#fff1e2;--green:#144525;--gs:#e9f1ec;--line:#e6e2d8;--text:#1c211e;--muted:#6f766f;--done:#1d7a43}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--text);font-family:'Figtree',system-ui,sans-serif;font-size:16px;line-height:1.65}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+a{color:var(--green)}a:hover{text-decoration:underline}
+
+/* ── HEADER ── */
+.top{background:var(--ink);padding:16px 24px}
+.ti{max-width:1020px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tl{height:48px}.tr{text-align:right}
+.tt{font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;text-transform:uppercase;color:#fff;letter-spacing:.5px}
+.ts{font-size:12px;color:#b9beb6;margin-top:2px}.ts b{color:var(--orange)}
+
+/* ── PROGRESS ── */
+.ebar{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:9px 24px}
+.ebi{max-width:1020px;margin:0 auto}
+.ebr{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ebl{font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.ebc{font-size:13px;color:var(--muted);font-weight:600}.ebc b{color:var(--orange);font-size:15px}
+.bar{margin-top:6px;height:11px;border-radius:99px;background:#e9e5da;overflow:hidden}
+.bf{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--orange) 60%,#ffb25e);border-radius:99px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+
+/* ── FLOATING GLOSSARY ── */
+.gBtn{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;background:var(--green);color:#fff;border:none;cursor:pointer;border-radius:10px 0 0 10px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:-3px 0 12px rgba(0,0,0,.15);transition:background .15s}
+.gBtn:hover{background:#1a5e32}
+.gBtn svg{width:20px;height:20px;fill:#fff}
+.gBtn span{font-family:'Archivo',sans-serif;font-weight:800;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed}
+.gPanel{position:fixed;right:-360px;top:0;height:100vh;width:340px;background:var(--card);z-index:95;box-shadow:-6px 0 28px rgba(0,0,0,.14);transition:right .3s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;overflow:hidden}
+.gPanel.open{right:0}
+.gHead{background:var(--green);color:#fff;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.gHead h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;letter-spacing:.5px}
+.gClose{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:0 4px;line-height:1}
+.gBody{flex:1;overflow-y:auto;padding:14px 16px}
+.gSrchWrap{padding:4px 0 10px;position:sticky;top:0;background:var(--card);z-index:2}
+#gSearch{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 12px 8px 32px;font-family:'Figtree',sans-serif;font-size:14px;background:#f7f5f0;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236f766f' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
+#gSearch:focus{border-color:var(--orange);background-color:#fff;box-shadow:0 0 0 3px #ff7e0022}
+.gNoResult{padding:20px 0;text-align:center;color:var(--muted);font-size:14px;display:none}
+.gSec{font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.gItem{padding:8px 0;border-bottom:1px solid #f0ece4}
+.gItem:last-child{border-bottom:none}
+.gItem strong{display:block;font-size:13.5px;color:var(--ink)}
+.gItem .gEn{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;display:block;margin-top:1px}
+.gItem p{font-size:13px;color:#3c443e;margin-top:3px}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1020px;margin:0 auto;padding:26px 24px 70px}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:22px;border-left:5px solid var(--orange)}
+.intro h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(19px,2.8vw,27px);color:var(--ink);line-height:1.2}
+.intro p{margin-top:8px;color:#3c443e;max-width:64ch;font-size:15px}
+.intro .r{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+.intro .r b{color:var(--green)}
+
+/* ── GAMMA EMBED ── */
+.gma{margin-bottom:24px}
+.gma summary{cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:11px 16px;background:var(--gs);border-radius:10px;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;border:1px solid #c9ddd1}
+.gma summary::-webkit-details-marker{display:none}
+.gma summary::before{content:"▶";font-size:9px;transition:transform .2s;flex-shrink:0}
+.gma[open] summary::before{transform:rotate(90deg)}
+.gma .gif{margin-top:0;border-radius:0 0 12px 12px;overflow:hidden;border:1px solid #c9ddd1;border-top:none}
+.gma iframe{width:100%;height:520px;border:none;display:block}
+
+/* ── MODULE TABS ── */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tab{flex:1;min-width:165px;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:'Figtree',sans-serif;transition:border-color .15s}
+.tab:hover{border-color:#c9c4b6}
+.tab .tn{font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.tab .tk{font-weight:700;font-size:14px;color:var(--ink);margin-top:2px}
+.tab .th{font-size:11.5px;color:var(--muted);margin-top:1px}
+.tab.on{border:2px solid var(--orange);background:var(--os)}.tab.on .tn{color:var(--orange)}
+.panel{display:none}.panel.on{display:block}
+
+/* ── VIDEO (click-to-play) ── */
+.vbox{margin:14px 0;border-radius:12px;overflow:hidden;background:#111;position:relative;cursor:pointer}
+.vbox img{width:100%;display:block;opacity:.9;transition:opacity .2s}
+.vbox:hover img{opacity:.75}
+.vplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,126,0,.9);border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.vplay svg{width:26px;height:26px;fill:#fff;margin-left:4px}
+.vbox .vcap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:#fff;font-size:13px;padding:16px 14px 10px;pointer-events:none}
+.vbox iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+.vlinks{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.vlink{font-size:12.5px;color:var(--green);font-weight:600}
+
+/* ── INSPIRE (comparison section) ── */
+.inspire{background:var(--ink);border-radius:12px;padding:16px 20px;margin:14px 0;color:#fff}
+.inspire h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:var(--orange);margin-bottom:10px;letter-spacing:.5px}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.igrid{grid-template-columns:1fr}}
+.icard{background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px}
+.icard strong{display:block;font-size:13px;color:#fff;margin-bottom:4px}
+.icard p{font-size:12.5px;color:#b9beb6;line-height:1.5}
+.icard a{color:var(--orange);font-size:12px;display:block;margin-top:6px;text-decoration:none}
+.icard a:hover{text-decoration:underline}
+
+/* ── EXERCISE CARD ── */
+.cw{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:border-color .25s}
+.cw.done{border-color:var(--done)}
+.cwh{padding:16px 20px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.cwm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.cwn{color:var(--orange)}.cwmod{background:var(--green);color:#fff;padding:2px 8px;border-radius:4px}
+.cwt{color:var(--muted)}
+.cwbadge{display:none;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:var(--done);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.cw.done .cwbadge{display:inline-block}
+.cwtitle{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(17px,2.2vw,22px);color:var(--ink);line-height:1.2;padding:2px 20px 0}
+.cwgoal{margin:9px 20px 0;padding:9px 13px;border-radius:8px;background:var(--gs);color:#143b22;font-size:14px}
+.cwgoal b{font-weight:700}
+.cwbody{padding:14px 20px 20px}
+.sec{font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* ── STEPS ── */
+.step{display:flex;gap:11px;align-items:flex-start;padding:7px 9px;border-radius:8px;cursor:pointer;transition:background .15s}
+.step:hover{background:#faf8f3}
+.step input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:21px;height:21px;margin-top:2px;cursor:pointer;border:2px solid #b9b3a3;border-radius:6px;background:#fff;display:grid;place-content:center;transition:all .15s}
+.step input::before{content:"";width:11px;height:11px;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%);background:#fff;transform:scale(0);transition:transform .15s}
+.step input:checked{background:var(--orange);border-color:var(--orange)}
+.step input:checked::before{transform:scale(1)}
+.step span{font-size:15px}
+.step input:checked+span{color:var(--muted);text-decoration:line-through;text-decoration-color:#c9c4b6}
+
+/* ── PROMPT ── */
+.prom{margin:11px 0;border-radius:10px;overflow:hidden;border:1px solid #23282488}
+.pbar{background:#171b18;color:#9aa39a;display:flex;justify-content:space-between;align-items:center;padding:7px 13px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Archivo',sans-serif;font-weight:700}
+.pcopy{font-family:'Figtree',sans-serif;font-weight:700;font-size:12px;background:var(--orange);color:#1a1206;border:none;border-radius:5px;padding:4px 12px;cursor:pointer;transition:all .15s}
+.pcopy:hover{background:#ff9226}.pcopy.cp{background:var(--done);color:#fff}
+.prom pre{background:var(--ink);color:#e8ece7;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;padding:13px 15px;white-space:pre-wrap;word-break:break-word}
+.prom pre b{color:#ffb25e;font-weight:500}
+
+/* ── CHOICE A/B ── */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:580px){.ch{grid-template-columns:1fr}}
+.cho{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:#fcfbf7}
+.cho b{display:block;font-family:'Archivo',sans-serif;font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+.cho p{font-size:13.5px}
+
+/* ── NOTES ── */
+.notes textarea{width:100%;min-height:90px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:#fcfbf7;padding:11px 13px;font-family:'Figtree',sans-serif;font-size:14.5px;color:var(--text)}
+.notes textarea:focus{border-color:var(--orange);outline:none;box-shadow:0 0 0 3px #ff7e0022}
+.nh{font-size:12px;color:var(--muted);margin-top:4px}
+.sv{color:var(--done);font-weight:600;opacity:0;transition:opacity .3s}.sv.s{opacity:1}
+
+/* ── TOOLS GRID ── */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:8px;margin:10px 0}
+.tool{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fcfbf7;text-decoration:none;display:block;transition:border-color .15s}
+.tool:hover{border-color:var(--orange)}
+.tool b{display:block;font-size:14px;color:var(--ink)}
+.tool .tu{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);margin:2px 0 3px;display:block}
+.tool p{font-size:12.5px;color:var(--muted)}
+
+.hint{font-size:13.5px;color:var(--muted);background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:9px 13px;margin:8px 0}
+.hint b{color:var(--green)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{font-family:'Figtree',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;padding:11px 19px;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--ink);color:#fff}.bp:hover{background:#252b27}
+.bg{background:transparent;border:2px solid var(--ink);color:var(--ink)}.bg:hover{background:#0c0f0d0d}
+
+footer{background:var(--ink);color:#9aa39a;margin-top:30px;padding:20px 24px;font-size:13px}
+.fi{max-width:1020px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.fi b{color:#fff}.fi .o{color:var(--orange)}
+
+@media(max-width:640px){
+  .ti{justify-content:center;text-align:center}.tr{text-align:center}
+  .tabs{flex-direction:column}
+  .cwh{flex-direction:column}
+  .cwtitle,.cwgoal,.cwbody,.cwh{padding-left:14px;padding-right:14px}
+  .gPanel{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING GLOSSARY BUTTON -->
+<button class="gBtn" id="gBtn" aria-label="Słownik terminów">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+<span>Słownik</span>
+</button>
+
+<!-- GLOSSARY PANEL -->
+<div class="gPanel" id="gPanel" role="dialog" aria-label="Słownik terminów marketingowych">
+<div class="gHead">
+  <h2>📖 Słownik terminów</h2>
+  <button class="gClose" id="gClose" aria-label="Zamknij">×</button>
+</div>
+<div class="gBody">
+<div class="gSrchWrap">
+  <input type="search" id="gSearch" placeholder="Szukaj… np. CTA, UVP, hook" autocomplete="off" aria-label="Szukaj w słowniku">
+</div>
+<div class="gNoResult" id="gNoResult">Brak wyników dla „<span id="gQ"></span>"</div>
+
+<div class="gSec">Analityka marketingowa (Moduł 10)</div>
+<div class="gItem"><strong>CTR</strong><span class="gEn">Click-Through Rate = Współczynnik klikalności</span><p>% osób, które kliknęły reklamę po jej zobaczeniu. Dobry CTR: Meta &gt;1%, Google Search &gt;2–3%. „Ilu przechodniów weszło do sklepu."</p></div>
+<div class="gItem"><strong>CPC</strong><span class="gEn">Cost Per Click = Koszt kliknięcia</span><p>Ile płacisz za jedno kliknięcie w reklamę. Im niższy tym lepiej — ale sam niski CPC nie oznacza dobrej kampanii. „Ile płacę za jedno wejście do sklepu."</p></div>
+<div class="gItem"><strong>CPM</strong><span class="gEn">Cost Per Mille = Koszt tysiąca wyświetleń</span><p>Ile kosztuje pokazanie reklamy tysiącowi osób. Wskaźnik zasięgu i kosztów dotarcia — nie mówi nic o jakości klikania.</p></div>
+<div class="gItem"><strong>CPL</strong><span class="gEn">Cost Per Lead = Koszt pozyskania leada</span><p>Ile kosztuje pozyskanie jednej osoby, która zostawiła kontakt. Porównuj ze swoją marżą — jeśli CPL &gt; zysk z klienta, kampania nie ma sensu.</p></div>
+<div class="gItem"><strong>CR</strong><span class="gEn">Conversion Rate = Współczynnik konwersji</span><p>% osób, które wykonały pożądaną akcję (zakup, zapis, formularz). Typowo 1–5% dla stron internetowych. „Ilu z tych, co weszli, naprawdę kupiło."</p></div>
+<div class="gItem"><strong>ROAS</strong><span class="gEn">Return on Ad Spend = Zwrot z wydatków na reklamę</span><p>Przychód ÷ wydatki na reklamę. ROAS 4 = 4 zł przychodu z każdej 1 zł wydanej. ROAS &lt;1 = dopłacasz. Król wskaźników — najważniejszy przy ocenie kampanii.</p></div>
+
+<div class="gSec">Fundamenty AI</div>
+<div class="gItem"><strong>AI</strong><span class="gEn">Artificial Intelligence</span><p>Sztuczna Inteligencja — systemy komputerowe, które uczą się i naśladują ludzkie myślenie. Claude, ChatGPT, Gemini to przykłady AI.</p></div>
+<div class="gItem"><strong>LLM</strong><span class="gEn">Large Language Model</span><p>Duży Model Językowy — typ AI wytrenowany na miliardach tekstów. Przykłady: Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google).</p></div>
+<div class="gItem"><strong>PROMPT</strong><span class="gEn">Polecenie dla AI</span><p>Instrukcja tekstowa wpisywana w narzędzie AI. Im dokładniejszy prompt, tym lepszy wynik. „Powiedz AI czego chcesz i jak."</p></div>
+<div class="gItem"><strong>RZKF</strong><span class="gEn">Rola + Zadanie + Kontekst + Format</span><p>Struktura skutecznego promptu: <b>R</b>ola (kim jest AI), <b>Z</b>adanie (co zrobić), <b>K</b>ontekst (Twój biznes), <b>F</b>ormat (jak ma wyglądać odpowiedź).</p></div>
+
+<div class="gSec">Marka i komunikacja</div>
+<div class="gItem"><strong>UVP</strong><span class="gEn">Unique Value Proposition = Unikalna Propozycja Wartości</span><p>Jedno zdanie wyjaśniające dlaczego klient wybiera CIEBIE, a nie konkurencję. „Kim jesteś, komu pomagasz, jaki problem rozwiązujesz."</p></div>
+<div class="gItem"><strong>BIO</strong><span class="gEn">Biography = Opis profilu</span><p>Krótki tekst opisujący Ciebie lub Twój biznes w social media. Powinien zawierać UVP + CTA.</p></div>
+<div class="gItem"><strong>Brand / Marka</strong><span class="gEn">Brand</span><p>Tożsamość wizualna (kolory, logo, font) i komunikacyjna (ton, styl, wartości) firmy lub osoby.</p></div>
+<div class="gItem"><strong>Nisza</strong><span class="gEn">Niche</span><p>Wąska, konkretna specjalizacja lub precyzyjnie zdefiniowana grupa docelowa. Np. nie „fotografka" ale „fotografka ślubna w Krakowie".</p></div>
+<div class="gItem"><strong>Pozycjonowanie</strong><span class="gEn">Positioning</span><p>Jak Twoja marka jest postrzegana na tle konkurencji. Co Cię wyróżnia i dlaczego klient powinien wybrać właśnie Ciebie.</p></div>
+<div class="gItem"><strong>Copywriting</strong><span class="gEn">Copywriting</span><p>Pisanie tekstów, które sprzedają lub angażują — posty, reklamy, opisy produktów, strony internetowe.</p></div>
+
+<div class="gSec">Content i social media</div>
+<div class="gItem"><strong>Content / Treść</strong><span class="gEn">Content</span><p>Materiały publikowane w internecie: posty, wideo, grafiki, artykuły, newslettery. „Treść, która przyciąga klientów."</p></div>
+<div class="gItem"><strong>Hook</strong><span class="gEn">Haczyk</span><p>Pierwsze zdanie posta lub pierwsze 3 sekundy wideo — musi natychmiast zatrzymać odbiorcę i sprawić, żeby chciał więcej.</p></div>
+<div class="gItem"><strong>CTA</strong><span class="gEn">Call To Action = Wezwanie do Działania</span><p>Konkretna instrukcja dla odbiorcy: „Kliknij link w bio", „Napisz do mnie", „Zarezerwuj teraz". Jedno CTA na jeden materiał.</p></div>
+<div class="gItem"><strong>Newsletter</strong><span class="gEn">E-mail marketingowy</span><p>Cykliczny e-mail z wartościowymi treściami wysyłany do subskrybentów. Buduje relację i sprzedaje bez algorytmów platform.</p></div>
+<div class="gItem"><strong>Reels</strong><span class="gEn">Krótkie wideo pionowe</span><p>Pionowy film (format 9:16) do 90 sek na Instagram. Najszybciej rosnący format w social media.</p></div>
+<div class="gItem"><strong>Story / Relacja</strong><span class="gEn">Story</span><p>Pionowe wideo lub zdjęcie znikające po 24 godzinach na Instagramie i Facebooku. Służy do zakulisowych treści i CTA.</p></div>
+<div class="gItem"><strong>Karuzela</strong><span class="gEn">Carousel</span><p>Seria slajdów/zdjęć w jednym poście, które przewijasz palcem. Bardzo wysokie zaangażowanie na Instagramie i LinkedIn.</p></div>
+<div class="gItem"><strong>Hashtag (#)</strong><span class="gEn">Hashtag</span><p>Oznaczenie (#temat) grupujące treści według tematu. Pomaga algorytmowi zrozumieć, o czym jest post.</p></div>
+<div class="gItem"><strong>Repurposing</strong><span class="gEn">Przerabianie treści</span><p>Tworzenie wielu formatów z jednego materiału źródłowego. Z artykułu → post, Reels, karuzela, newsletter. Oszczędza 80% czasu.</p></div>
+
+<div class="gSec">Wideo i audio</div>
+<div class="gItem"><strong>Format 9:16</strong><span class="gEn">Pionowy format wideo</span><p>Proporcje ekranu telefonu — używany w Reels, TikTok, Stories. Zajmuje cały ekran i przykuwa uwagę bardziej niż 16:9.</p></div>
+<div class="gItem"><strong>Napisy automatyczne</strong><span class="gEn">Auto Subtitles</span><p>Napisy generowane przez AI rozpoznające mowę. VEED.IO robi je jednym kliknięciem. 85% ludzi ogląda wideo bez dźwięku.</p></div>
+<div class="gItem"><strong>Voiceover</strong><span class="gEn">Lektor</span><p>Głos lektora nagrany osobno i dodany do wideo. Można zastąpić głosem AI (ElevenLabs) bez nagrywania.</p></div>
+<div class="gItem"><strong>Voice Cloning</strong><span class="gEn">Klonowanie głosu</span><p>Tworzenie cyfrowej kopii głosu z próbki audio (1–5 min). AI może potem czytać dowolny tekst tym głosem.</p></div>
+<div class="gItem"><strong>Avatar AI</strong><span class="gEn">Cyfrowa postać AI</span><p>Wygenerowana komputerowo postać mówiąca Twoim skryptem. HeyGen i D-ID tworzą realistyczne avatary AI.</p></div>
+<div class="gItem"><strong>Auto Cut</strong><span class="gEn">Automatyczne cięcie</span><p>Funkcja w VEED.IO usuwająca pauzy, „yyyy/mmm" i ciszę z wideo automatycznie. Skraca czas montażu o 70%.</p></div>
+
+<div class="gSec">Grafika i design</div>
+<div class="gItem"><strong>Brand Kit</strong><span class="gEn">Zestaw marki</span><p>Spójny zestaw: 2–3 kolory, 1–2 fonty, logo. Używany na wszystkich materiałach dla rozpoznawalności.</p></div>
+<div class="gItem"><strong>Szablon</strong><span class="gEn">Template</span><p>Gotowy projekt graficzny do ponownego użycia. W Canva tworzysz raz → edytujesz w 2 minuty.</p></div>
+<div class="gItem"><strong>Magic Design</strong><span class="gEn">Magiczny projekt (Canva AI)</span><p>Funkcja Canvy generująca projekt graficzny z opisu tekstowego lub tematu. Jeden prompt = kilka wariantów do wyboru.</p></div>
+<div class="gItem"><strong>Infografika</strong><span class="gEn">Infographic</span><p>Grafika zawierająca dane, listę punktów lub porównanie — przekazuje informację szybciej niż tekst.</p></div>
+
+<div class="gSec">Strategia i marketing</div>
+<div class="gItem"><strong>Lead</strong><span class="gEn">Potencjalny klient</span><p>Osoba, która zostawiła swoje dane kontaktowe (e-mail, telefon) i wyraziła zainteresowanie. Jeszcze nie kupiła.</p></div>
+<div class="gItem"><strong>Lead Magnet</strong><span class="gEn">Magnes na leady</span><p>Darmowa wartość oferowana w zamian za kontakt: PDF, checklista, mini-kurs, webinar. „Coś za coś."</p></div>
+<div class="gItem"><strong>Lejek sprzedażowy</strong><span class="gEn">Sales Funnel</span><p>Droga klienta od „nie wie, że istniejesz" do „kupuje". 4 etapy: Świadomość → Zainteresowanie → Rozważanie → Decyzja.</p></div>
+<div class="gItem"><strong>Stack AI</strong><span class="gEn">Zestaw narzędzi AI</span><p>Osobisty dobór narzędzi AI dopasowanych do Twojej pracy. Nie 20 narzędzi, ale 5–6 dobrze dobranych.</p></div>
+<div class="gItem"><strong>B2B</strong><span class="gEn">Business to Business</span><p>Sprzedaż firma → firma. Np. agencja marketingowa dla restauracji. Dłuższy proces decyzyjny, wyższe kwoty.</p></div>
+<div class="gItem"><strong>B2C</strong><span class="gEn">Business to Consumer</span><p>Sprzedaż firma → klient indywidualny. Np. sklep z kosmetykami. Szybsza decyzja, mniejsze kwoty.</p></div>
+<div class="gItem"><strong>RODO</strong><span class="gEn">GDPR — przepisy o ochronie danych</span><p>Rozporządzenie UE o Ochronie Danych Osobowych. Wymaga zgody na przetwarzanie danych (e-mail, telefon) każdego klienta.</p></div>
+
+</div><!-- gBody -->
+</div><!-- gPanel -->
+
+<header class="top">
+  <div class="ti">
+    <img class="tl" src="data:image/jpeg;base64,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" alt="Energia dla Biznesu">
+    <div class="tr">
+      <div class="tt">Nowoczesny Marketing z AI</div>
+      <div class="ts">Ćwiczenia praktyczne · <b>Marka · Content · Wideo · Grafika</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="ebar">
+  <div class="ebi">
+    <div class="ebr">
+      <span class="ebl">⚡ Postęp</span>
+      <span class="ebc"><b id="pct">0%</b> · <span id="dc">0</span>/<span id="tc">0</span> kroków</span>
+    </div>
+    <div class="bar"><div class="bf" id="bf"></div></div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <h1>Tworzysz dziś prawdziwe materiały.<br>Każde ćwiczenie = gotowy efekt.</h1>
+  <p>Marka, tydzień postów, zmontowane wideo, zestaw grafik — to wszystko wychodzi z dzisiejszego dnia. Pracuj krokami, wszystkie prompty są gotowe do skopiowania. Jeśli masz pytanie — daj znak.</p>
+  <div class="r"><b>Zasada:</b> 15 min teoria+demo → 40 min Ty pracujesz → 10 min omawiamy. Kliknij 📖 <b>Słownik</b> po prawej jeśli termin jest niejasny.</div>
+</section>
+
+<!-- GAMMA EMBED -->
+<details class="gma" open>
+  <summary>📊 Prezentacja szkoleniowa — otwórz i korzystaj przez cały dzień</summary>
+  <div class="gif">
+    <iframe src="https://gamma.app/embed/9ouaojc8m3v8mi9" allowfullscreen loading="lazy" title="Nowoczesny Marketing z AI — prezentacja"></iframe>
+  </div>
+</details>
+
+<!-- TABS -->
+<div class="tabs" role="tablist">
+  <button class="tab on" data-panel="p1"><span class="tn">Moduł 1</span><span class="tk">Marka osobista</span><span class="th">UVP · bio · konkurencja</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Moduł 2</span><span class="tk">Treści z AI</span><span class="th">7 postów · newsletter · Reels</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Moduł 3</span><span class="tk">Wideo</span><span class="th">VEED.IO · Flow · ElevenLabs</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Moduł 4</span><span class="tk">Grafika AI</span><span class="th">Canva · Copilot AI · GPT Image</span></button>
+</div>
+
+<!-- ═══════════ MODUŁ 1 ═══════════ -->
+<div class="panel on" id="p1">
+
+<!-- INSPIRE: AI brands -->
+<div class="inspire">
+  <h3>🌍 Jak AI zmienia budowanie marki — obejrzyj przed ćwiczeniem</h3>
+  <div class="igrid">
+    <div class="icard">
+      <strong>Marki tworzone przez AI w 2024</strong>
+      <p>Logo, styl, komunikacja — w 20 minut. Pokazuje jak szybko działa AI w brandingu.</p>
+      <a href="https://www.youtube.com/results?search_query=AI+brand+identity+creation+2024+canva+chatgpt" target="_blank">🔎 Szukaj na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>Personal branding z AI — przed i po</strong>
+      <p>Porównanie profilu przed i po optymalizacji z AI. Widać różnicę w zaangażowaniu.</p>
+      <a href="https://www.youtube.com/results?search_query=personal+branding+with+AI+before+after+2024" target="_blank">🔎 Szukaj na YouTube →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ĆW 1A -->
+<article class="cw" data-cw="1A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1A</span><span class="cwmod">Moduł 1</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Twoje UVP — 3 warianty propozycji wartości</h2>
+  <p class="cwgoal"><b>Cel:</b> 3 gotowe warianty UVP — wybierzesz jeden i użyjesz go w bio i przez cały dzień.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz Claude lub ChatGPT i napisz 2–3 zdania o swoim biznesie: co sprzedajesz, komu i ile to kosztuje.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj Prompt UVP poniżej, uzupełnij nawiasy i wyślij do AI.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Przeczytaj 3 warianty. Który brzmi jak Ty? Który jest najbardziej konkretny?</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz wybrany wariant UVP w notatkach — użyjesz go w każdym kolejnym ćwiczeniu dziś.</span></label>
+    <div class="sec">Prompt UVP</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — UVP (3 warianty)</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś ekspertem ds. pozycjonowania marki. Oto mój biznes:
+<b>[OPISZ CZYM SIĘ ZAJMUJESZ, KTO JEST KLIENTEM, JAKA JEST CENA]</b>
+
+Napisz 3 warianty mojego UVP w formacie:
+„Pomagam [KTO] osiągnąć [REZULTAT] dzięki [CO WYRÓŻNIA]."
+
+Każdy wariant powinien być inny: jeden emocjonalny, jeden konkretny z liczbą, jeden oparty na specjalizacji.
+Dodaj 1 zdanie komentarza do każdego — kiedy go używać.</pre>
+    </div>
+    <div class="sec">Twoje notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Wybrane UVP: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 1B -->
+<article class="cw" data-cw="1B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1B</span><span class="cwmod">Moduł 1</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Bio na 3 platformy — napisz i zaktualizuj teraz</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowe bio w 3 wersjach (krótkie/średnie/długie) + zaktualizowany profil na żywo.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj Prompt Bio poniżej. Wstaw swoje UVP z ćw. 1A i wyślij do AI.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Otrzymasz 3 wersje bio — przeczytaj je na głos. Która brzmi naturalnie?</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz Instagram lub LinkedIn → Edytuj profil → zaktualizuj bio teraz, na żywo.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zrób screenshot zaktualizowanego profilu. Pokaż trenerowi — omówimy co działa.</span></label>
+    <div class="sec">Prompt Bio</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — bio na 3 platformy</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Moje UVP: <b>[WKLEJ UVP Z ĆW. 1A]</b>
+
+Napisz bio w 3 wersjach:
+1. KRÓTKIE (max 80 znaków) — do sekcji bio na Instagramie
+2. ŚREDNIE (max 150 znaków) — do nagłówka LinkedIn  
+3. DŁUGIE (max 300 znaków) — do sekcji „O mnie" na stronie
+
+Każda wersja powinna: jasno mówić komu pomagam, zawierać CTA (np. „DM" / „Link w bio" / „Napisz do mnie") i brzmieć jak człowiek, nie jak korporacja.</pre>
+    </div>
+    <div class="sec">Twoje notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Bio krótkie (80 zn): …&#10;Bio średnie (150 zn): …&#10;Bio długie (300 zn): …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 1C -->
+<article class="cw" data-cw="1C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1C</span><span class="cwmod">Moduł 1</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Analiza konkurencji — znajdź swoją niszę</h2>
+  <p class="cwgoal"><b>Cel:</b> wiesz jak wyróżnić się na tle 3 konkurentów + masz 1 zdanie pozycjonowania.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Znajdź 3 konta lub firmy w swojej branży w social media lub Google. Zanotuj co oferują i jak komunikują.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Opisz je AI za pomocą Promptu poniżej i poczekaj na analizę.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Z rekomendacji AI wybierz <b>jeden kąt</b> który wyróżni Cię na tle innych — zapisz go w notatkach.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Napisz zdanie: „Wyróżniam się tym, że…" — to Twój fundament komunikacji na dziś i na przyszłość.</span></label>
+    <div class="sec">Prompt — analiza konkurencji</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — konkurencja i nisza</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jestem <b>[TWÓJ ZAWÓD I BRANŻA]</b>. Analizuję 3 konkurentów:
+
+Konkurent A: <b>[NAZWA + co oferuje + jak komunikuje + cena]</b>
+Konkurent B: <b>[NAZWA + co oferuje + jak komunikuje + cena]</b>
+Konkurent C: <b>[NAZWA + co oferuje + jak komunikuje + cena]</b>
+
+Analizując ich:
+1. Co robią dobrze? Co im brakuje?
+2. Jaka luka rynkowa istnieje — czego klienci nie dostają od żadnego z nich?
+3. Jak powinienem/powinnam się pozycjonować żeby wyróżnić się konkretnie?
+4. Napisz zdanie: „Wyróżniam się tym, że…" dopasowane do mojej sytuacji.</pre>
+    </div>
+    <div class="sec">Twoje notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Wyróżniam się tym, że: …&#10;Nisza: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+</div><!-- end p1 -->
+
+<!-- ═══════════ MODUŁ 2 ═══════════ -->
+<div class="panel" id="p2">
+
+<!-- INSPIRE: AI content -->
+<div class="inspire">
+  <h3>✍️ Jak AI tworzy treści — przykłady przed ćwiczeniem</h3>
+  <div class="igrid">
+    <div class="icard">
+      <strong>ChatGPT tworzy 30 postów w 5 minut</strong>
+      <p>Demo na żywo — od pustej strony do gotowego planu treści. Pokazuje moc promptów marketingowych.</p>
+      <a href="https://www.youtube.com/results?search_query=ChatGPT+social+media+posts+content+marketing+2024+demo" target="_blank">🔎 Szukaj na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>Przed i po — treści bez AI vs z AI</strong>
+      <p>Porównanie jakości i czasu tworzenia. Ten sam post — 2 godziny ręcznie vs 3 minuty z AI.</p>
+      <a href="https://www.youtube.com/results?search_query=AI+content+creation+before+after+marketing+comparison" target="_blank">🔎 Szukaj na YouTube →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ĆW 2A -->
+<article class="cw" data-cw="2A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2A</span><span class="cwmod">Moduł 2</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">7 tematów na tydzień — plan treści</h2>
+  <p class="cwgoal"><b>Cel:</b> 7 tematów postów z tytułami i hookami. Wybierzesz 3, które rozwiniesz w ćw. 2B.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj Prompt poniżej, wstaw swoje UVP i kontekst biznesu.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Prześlij do AI — poczekaj na 7 propozycji z różnymi formatami.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zakreśl/zaznacz 3 tematy, które chcesz napisać. Który publikujesz jako pierwszy?</span></label>
+    <div class="sec">Prompt — 7 tematów</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — plan tygodnia</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś strategiem content marketingu. 
+Mój biznes i UVP: <b>[WKLEJ UVP + PRODUKT + KLIENT]</b>
+
+Przygotuj 7 tematów postów na ten tydzień — każdy inny format:
+1. EDUKACYJNY — wyjaśnij pojęcie ważne dla Twojego klienta
+2. EMOCJONALNY — historia klienta lub Twoja własna
+3. SPRZEDAŻOWY — konkretna korzyść lub oferta (bez wstydliwości)
+4. PYTANIE — angażujące pytanie do społeczności
+5. KULISY — jak wygląda Twoja praca od środka
+6. CASE STUDY — efekt pracy lub zanim/potem
+7. MOTYWACYJNY — zasada z Twojej branży, która zmienia perspektywę
+
+Dla każdego: tytuł tematu + hook (pierwsze zdanie) + CTA.</pre>
+    </div>
+    <div class="sec">Notatki — 3 wybrane tematy</div>
+    <div class="notes"><textarea data-notes placeholder="Temat 1: …  Temat 2: …  Temat 3: …  Pierwszy do publikacji: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 2B -->
+<article class="cw" data-cw="2B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2B</span><span class="cwmod">Moduł 2</span><span class="cwt">~30 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">3 gotowe posty — różne platformy i style</h2>
+  <p class="cwgoal"><b>Cel:</b> 3 pełne posty gotowe do wklejenia i publikacji na Instagram, Facebook i LinkedIn.</p>
+  <div class="cwbody">
+    <div class="hint"><b>Wskazówka:</b> Ten sam temat — różny styl na każdej platformie. Instagram: emocjonalny, visual. Facebook: konwersacyjny. LinkedIn: ekspercki.</div>
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wybierz najlepszy temat z ćw. 2A. Wyślij Prompt Instagram poniżej i otrzymaj pełny post.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt Facebook dla tego samego tematu — inny styl, inne CTA.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt LinkedIn — ekspercki ton, dłuższy format, bez hashtagów.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wklej gotowe posty w narzędzie do planowania (np. Meta Suite) lub zapisz w notatkach poniżej.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Opublikuj lub zaplanuj publikację JEDNEGO posta na dziś lub jutro.</span></label>
+    <div class="sec">Prompt — Instagram</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — post Instagram</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś copywriterem dla małych firm. Napisz post na Instagram.
+Mój biznes: <b>[UVP + PRODUKT]</b>
+Temat posta: <b>[WYBRANY TEMAT Z ĆW. 2A]</b>
+
+Format:
+- Hook (1 zdanie, max 150 znaków) — zaskakujące lub prowokacyjne
+- Treść (150–250 słów) — historia lub wartość, bez lania wody
+- CTA (1 zdanie) — konkretne działanie
+- 5–8 hashtagów (mix popularnych i niszowych)
+
+Ton: ludzki, ciepły, bez korporacyjnych zwrotów.</pre>
+    </div>
+    <div class="sec">Prompt — Facebook</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — post Facebook</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Ten sam temat: <b>[TEMAT]</b>
+Napisz post na Facebook dla tej samej marki.
+Różnica vs Instagram: bardziej konwersacyjny, zakończony pytaniem do dyskusji.
+Długość: 100–180 słów. Bez hashtagów. CTA = pytanie do komentarzy.</pre>
+    </div>
+    <div class="sec">Prompt — LinkedIn</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — post LinkedIn</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Ten sam temat: <b>[TEMAT]</b>
+Napisz post na LinkedIn — ekspercki, merytoryczny.
+Format: hook + 5–7 punktorów z wartościową wiedzą + wniosek + CTA do dyskusji.
+Długość: 250–350 słów. Ton: profesjonalny ale ludzki. Bez hashtagów.</pre>
+    </div>
+    <div class="sec">Twoje gotowe posty</div>
+    <div class="notes"><textarea data-notes placeholder="Instagram: …&#10;&#10;Facebook: …&#10;&#10;LinkedIn: …" style="min-height:160px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 2C -->
+<article class="cw" data-cw="2C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2C</span><span class="cwmod">Moduł 2</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Newsletter e-mail — gotowy do wysyłki</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowy newsletter (temat + treść + CTA) na bazie jednego z Twoich postów.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt Newsletter poniżej — użyj tematu który Ci najbardziej odpowiada.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Dostaniesz 3 warianty tytułu (tematu maila) — wybierz jeden. Dobry tytuł maila to 80% sukcesu wysyłki.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wklej gotowy newsletter do MailerLite lub zapisz jako draft na później.</span></label>
+    <div class="sec">Prompt — newsletter</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — newsletter</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Napisz newsletter e-mail oparty na tym temacie: <b>[TEMAT Z ĆW. 2A]</b>
+Mój biznes: <b>[UVP]</b>
+
+Struktura:
+1. TEMAT MAILA — napisz 3 warianty (max 50 znaków). Jeden z liczbą, jeden z pytaniem, jeden z intrygą.
+2. PREHEADER — jedno zdanie (max 90 znaków) uzupełniające temat
+3. TREŚĆ (150–200 słów): ciepłe powitanie + wartościowa treść + 1 konkretna rada + historia lub przykład
+4. CTA — jedno jasne polecenie: odpowiedz, kliknij, zarezerwuj
+
+Ton: ciepły, jak e-mail od znajomego który zna się na rzeczy. Bez „Szanowni Państwo".</pre>
+    </div>
+    <div class="sec">Notatki — wybrany tytuł i treść</div>
+    <div class="notes"><textarea data-notes placeholder="Tytuł maila: …&#10;Preheader: …&#10;Treść: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 2D -->
+<article class="cw" data-cw="2D">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2D</span><span class="cwmod">Moduł 2</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Scenariusz Reels + karuzela w Gamma</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowy scenariusz wideo 30 sek + karuzela wygenerowana w Gamma.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki — scenariusz Reels</div>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt Reels — dostaniesz gotowy scenariusz hook→treść→CTA z instrukcją nagrania.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Przeczytaj scenariusz na głos — sprawdź czy mieści się w 30 sekundach.</span></label>
+    <div class="sec">Kroki — karuzela w Gamma</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na <a href="https://gamma.app" target="_blank">gamma.app</a> → Create new → Paste in text → wklej konspekt karuzeli z Promptu poniżej → Generate.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wybierz format „Presentation" lub „Document" → przejrzyj slajdy → eksportuj jako PDF lub PNG.</span></label>
+    <div class="sec">Prompt — scenariusz Reels</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — Reels 30 sek</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Napisz scenariusz Reels na 30 sekund na temat: <b>[TEMAT]</b>
+Mój biznes: <b>[UVP]</b>
+
+Format:
+🎣 HOOK (pierwsze 3 sek) — tekst na ekranie + co mówię: ...
+💡 TREŚĆ (20 sek) — problem klienta + moje rozwiązanie: ...
+📣 CTA (7 sek) — jedno jasne polecenie: ...
+
+Dodaj: sugestię tła/scenografii, czy potrzebna muzyka, jaki rekwizyt.
+Na koniec: konspekt karuzeli (8 slajdów) na ten sam temat — tytuł + 1 zdanie na slajd.</pre>
+    </div>
+    <div class="sec">Twoje notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Hook: …  CTA: …  Link do Gammy: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+</div><!-- end p2 -->
+
+<!-- ═══════════ MODUŁ 3 ═══════════ -->
+<div class="panel" id="p3">
+
+<!-- INSPIRE: AI voice & video evolution -->
+<div class="inspire">
+  <h3>🎬 Jak AI wideo i głos zmieniały się od 2022 do dziś — obejrzyj!</h3>
+  <div class="igrid">
+    <div class="icard">
+      <strong>AI wideo 2022 vs 2025 — porównanie jakości</strong>
+      <p>Runway Gen-1 (2022) wyglądał jak sen po pizzy. Sora i Veo 2 (2024/25) — nieodróżnialne od prawdziwego wideo.</p>
+      <a href="https://www.youtube.com/results?search_query=AI+video+generation+evolution+2022+2023+2024+2025+comparison+Runway+Sora+Veo" target="_blank">🔎 Porównanie AI wideo na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>ElevenLabs: głos AI 2023 vs 2025</strong>
+      <p>2023: robotyczne i sztuczne. 2025: nieodróżnialny od prawdziwego głosu. Klonowanie głosu z 1 minuty nagrania.</p>
+      <a href="https://www.youtube.com/results?search_query=ElevenLabs+voice+cloning+demo+2024+2025+realistic+AI+voice" target="_blank">🔎 Demo ElevenLabs na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>HeyGen — avatar AI mówi po polsku</strong>
+      <p>Wgrywasz wideo siebie, AI klonuje twarz i głos, tłumaczy na dowolny język. Marketing bez kamery i mikrofonu.</p>
+      <a href="https://www.youtube.com/results?search_query=HeyGen+AI+avatar+video+translation+2024+demo" target="_blank">🔎 Demo HeyGen na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>Google Veo 2 — AI generuje klipy z tekstu</strong>
+      <p>Wpisujesz opis sceny po angielsku → AI generuje realistyczny klip wideo w kilkanaście sekund.</p>
+      <a href="https://www.youtube.com/results?search_query=Google+Veo+2+AI+video+generation+demo+2024" target="_blank">🔎 Demo Veo 2 na YouTube →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ĆW 3A -->
+<article class="cw" data-cw="3A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 3A</span><span class="cwmod">Moduł 3 · VEED.IO</span><span class="cwt">~45 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Nagranie + montaż VEED.IO — gotowe wideo do publikacji</h2>
+  <p class="cwgoal"><b>Cel:</b> 30–60 sek wideo z automatycznymi napisami, hookiem na ekranie i CTA — gotowe na Instagram/TikTok.</p>
+  <div class="cwbody">
+    <div class="hint"><b>Przed nagraniem:</b> weź scenariusz z ćw. 2D. Przeczytaj go 2× na głos. Możesz trzymać kartkę poza kadrem — kamera tego nie widzi. Nagraj 2–3 wersje i wybierz najlepszą.</div>
+    <div class="sec">Kroki — nagranie</div>
+    <label class="step"><input type="checkbox" data-step><span>Ustaw telefon pionowo (9:16). Znajdź dobrze oświetlone miejsce — okno z boku, nie od przodu.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Nagraj 30–60 sek wideo z użyciem scenariusza z ćw. 2D. Nagraj min. 2 wersje.</span></label>
+    <div class="sec">Kroki — VEED.IO montaż</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na <a href="https://www.veed.io" target="_blank">veed.io</a> → Upload a File → wgraj najlepsze nagranie.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Napisy:</b> lewy panel → Subtitles → Auto Subtitles → Polish (lub Auto-detect) → Generate. Poczekaj 1–2 min.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Przejrzyj napisy — kliknij na błędne słowo i popraw. Sprawdź nazwy własne i specjalistyczne terminy.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Hook na ekranie:</b> Text → Add Text → wpisz pierwsze zdanie → ustaw 0–3 sek, duży font na środku.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Auto Cut:</b> lewy panel → Magic Actions → Auto Cut Silence → usuń pauzy automatycznie.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>CTA na końcu:</b> kolejny tekst → „Napisz w komentarzu" lub „Link w bio" → ostatnie 5 sek.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź proporcje: jeśli nagrano poziomo → Settings → Resize → TikTok 9:16.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Export → Download → gotowe! Pokaż trenerowi przed publikacją.</span></label>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Temat wideo: …  Co poprawiłam: …  Gotowe do publikacji: tak / nie"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 3B -->
+<article class="cw" data-cw="3B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 3B</span><span class="cwmod">Moduł 3 · ElevenLabs</span><span class="cwt">~25 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Głos AI — lektor do wideo bez nagrywania</h2>
+  <p class="cwgoal"><b>Cel:</b> wygenerowany voiceover AI po polsku + dodany do wideo w VEED.IO.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> → zaloguj się lub zarejestruj (bezpłatnie).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Kliknij <b>Text to Speech</b> → wybierz głos (szukaj „Polish" lub przetestuj „Zofia" / „Karol").</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wklej tekst scenariusza z ćw. 2D (lub napisz nowy krótki opis produktu) → kliknij <b>Generate</b>.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Odsłuchaj — czy brzmi naturalnie? Popraw interpunkcję tekstu jeśli głos się zacina.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Pobierz MP3 → wejdź do VEED.IO → Audio → Add Audio → wgraj MP3 → dopasuj do wideo.</span></label>
+    <div class="hint"><b>Bonus:</b> Chcesz klonować swój głos? ElevenLabs Voice Cloning → nagraj 1 minutę czystego głosu → prześlij → Twój głos mówi dowolny tekst.</div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Użyty głos: …  Efekt: …  Co poprawiłam w tekście: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 3C -->
+<article class="cw" data-cw="3C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 3C</span><span class="cwmod">Moduł 3 · Flow AI</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Klip AI z tekstu — Google Flow (Veo)</h2>
+  <p class="cwgoal"><b>Cel:</b> 1–2 klipy AI wygenerowane z opisu tekstowego + wstawione do VEED.IO jako wstawki produktowe.</p>
+  <div class="cwbody">
+    <div class="hint"><b>Uwaga:</b> Flow wymaga subskrypcji Google AI lub dostępu przez Google One. Demo z konta trenera — obserwuj i spróbuj napisać opisy scen.</div>
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na <a href="https://labs.google/flow" target="_blank">labs.google/flow</a> → zaloguj się kontem Google.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wpisz opis sceny po angielsku (użyj Promptu poniżej jako bazy) → kliknij Generate.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wybierz najlepszy wariant z 4 wygenerowanych → pobierz klip.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wgraj klip do VEED.IO → wstaw w odpowiednim miejscu wideo jako cut-away lub intro.</span></label>
+    <div class="sec">Prompt — opis scen dla Flow</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — opis po angielsku dla AI video</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Translate these scene descriptions to English for AI video generation:
+
+Scena 1: <b>[OPISZ SWÓJ PRODUKT LUB USŁUGĘ — np. „pergola ogrodowa lamelowa w ogrodzie przy zachodzie słońca"]</b>
+Scena 2: <b>[OPISZ EFEKT DLA KLIENTA — np. „rodzina siedzi pod pergolą, relaksuje się, dzieci się bawią"]</b>
+
+For each scene write: max 20 words in English, cinematic style, golden hour light, no text, photorealistic.
+Then generate: I will use this for Flow (Google Veo 2).</pre>
+    </div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Opis sceny 1 (EN): …  Opis sceny 2 (EN): …  Efekt: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+</div><!-- end p3 -->
+
+<!-- ═══════════ MODUŁ 4 ═══════════ -->
+<div class="panel" id="p4">
+
+<!-- INSPIRE: AI image evolution -->
+<div class="inspire">
+  <h3>🖼️ Jak AI grafika zmieniała się od 2022 do dziś</h3>
+  <div class="igrid">
+    <div class="icard">
+      <strong>Midjourney v1 (2022) vs v6 (2024)</strong>
+      <p>V1: pikselowe matriony. V6: zdjęcia nie do odróżnienia od sesji fotograficznej. Ewolucja w 2 lata.</p>
+      <a href="https://www.youtube.com/results?search_query=Midjourney+v1+vs+v6+comparison+evolution+AI+image" target="_blank">🔎 Porównanie Midjourney na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>GPT Image (DALL-E) — przed i po</strong>
+      <p>Stary DALL-E: ręce z 7 palcami. GPT-4o Image: profesjonalne zdjęcia produktowe z tekstu. Rewolucja.</p>
+      <a href="https://www.youtube.com/results?search_query=GPT+4o+image+generation+DALL-E+comparison+2024+2025" target="_blank">🔎 Porównanie GPT Image na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>Canva AI 2024 — co potrafi teraz</strong>
+      <p>Magic Design, Text to Image, Background Remover, Magic Eraser — wszystko w jednym narzędziu.</p>
+      <a href="https://www.youtube.com/results?search_query=Canva+AI+features+2024+magic+design+tutorial" target="_blank">🔎 Tutorial Canva AI na YouTube →</a>
+    </div>
+    <div class="icard">
+      <strong>Microsoft Copilot — DALL-E 3 za darmo</strong>
+      <p>copilot.microsoft.com — darmowy dostęp do DALL-E 3. Wpisujesz opis → profesjonalne zdjęcie produktowe. Bez subskrypcji.</p>
+      <a href="https://www.youtube.com/results?search_query=Microsoft+Copilot+AI+image+generation+free+DALL-E+2024+tutorial" target="_blank">🔎 Tutorial Copilot Image na YouTube →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ĆW 4A -->
+<article class="cw" data-cw="4A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4A</span><span class="cwmod">Moduł 4 · Copilot AI</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Zdjęcie produktu AI — Microsoft Copilot (bezpłatnie)</h2>
+  <p class="cwgoal"><b>Cel:</b> 2–3 realistyczne zdjęcia produktowe wygenerowane przez DALL-E 3 w Copilot — gotowe do użycia w grafice. Zero kosztów, zero instalacji.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a> → zaloguj się kontem Microsoft (Outlook/Hotmail) → kliknij ikonkę obrazka lub wpisz prompt w czacie.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Alternatywa bezpłatna:</b> <a href="https://www.bing.com/images/create" target="_blank">bing.com/images/create</a> — Image Creator od Bing, ten sam model (DALL-E 3), działa bez logowania.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wpisz opis zdjęcia produktu (użyj Promptu poniżej) → kliknij Generate → poczekaj kilka sekund.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wygeneruj 2–3 warianty zmieniając tło, oświetlenie lub kąt kamery (edytuj prompt i generuj ponownie).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Pobierz najlepsze zdjęcia → przechowaj na pulpicie do użycia w Canva (ćw. 4B).</span></label>
+    <div class="sec">Prompt — zdjęcie produktu</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — Microsoft Copilot / Bing Image Creator</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Professional product photography: <b>[OPISZ SWÓJ PRODUKT PO ANGIELSKU]</b>
+
+Wariant 1: clean white background, soft studio lighting, hero shot from 45 degrees
+Wariant 2: natural outdoor setting, golden hour light, lifestyle context
+Wariant 3: minimalist flat lay, top-down view, on neutral linen background
+
+Style: high-end commercial photography, sharp focus, no watermarks, no text overlays, photorealistic.</pre>
+    </div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Najlepszy wariant: …  Gdzie zapisałam: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 4B -->
+<article class="cw" data-cw="4B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4B</span><span class="cwmod">Moduł 4 · Canva</span><span class="cwt">~35 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Zestaw 5 grafik — spójna marka w social media</h2>
+  <p class="cwgoal"><b>Cel:</b> post pionowy, story, miniatura YouTube, baner Facebook, grafika edukacyjna — gotowe do publikacji.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span><b>Kolory marki:</b> wybierz 2 kolory główne + 1 akcentowy i jeden font. Zapisz HEX w notatkach — użyj ich na wszystkich grafikach.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Post 1080×1350:</b> Canva → New design → Instagram Post Portrait → Magic Design → wpisz temat → wybierz projekt → wstaw zdjęcie z ćw. 4A jako tło.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Story 1080×1920:</b> duplikuj projekt posta → Resize → Instagram Story → dostosuj układ.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Baner Facebook 820×312:</b> New design → Facebook Cover → użyj tych samych kolorów i fontu.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Miniatura YouTube 1280×720:</b> New design → YouTube Thumbnail → duży tytuł + twarz lub produkt + kontrast.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Export wszystkich → Share → Download → PNG lub JPG.</span></label>
+    <div class="hint"><b>Wskazówka wymiarów:</b> Post pionowy: 1080×1350 · Story: 1080×1920 · FB Cover: 820×312 · YouTube: 1280×720</div>
+    <div class="sec">Notatki — kolory i fonty marki</div>
+    <div class="notes"><textarea data-notes placeholder="Kolor 1: #…  Kolor 2: #…  Kolor akcentowy: #…  Font: …&#10;Gotowe grafiki: post ✓  story ✓  baner ✓  miniatura ✓"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- ĆW 4C -->
+<article class="cw" data-cw="4C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4C</span><span class="cwmod">Moduł 4 · GPT Image</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Infografika AI — porównanie lub lista z wizualizacją</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowa infografika wygenerowana przez GPT Image + wstawiona do Canva jako element grafiki.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz ChatGPT → wybierz model GPT-4o → przejdź na zakładkę generowania obrazów.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wklej Prompt infografiki poniżej, uzupełnij nawiasy danymi swojego produktu.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Pobierz wygenerowaną infografikę jako PNG.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wgraj do Canva → wstaw jako element nowego projektu → dodaj logo i kontakt na dole → eksportuj.</span></label>
+    <div class="sec">Prompt — infografika</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — GPT Image infografika</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Create a clean, modern infographic for social media post.
+
+Title: „<b>[NP. 3 zalety X vs Y / 5 powodów dlaczego / Jak działa X krok po kroku]</b>"
+Content: <b>[3–5 PUNKTÓW Z KRÓTKIM OPISEM KAŻDEGO]</b>
+Brand colors: <b>[TWÓJ KOLOR 1]</b> and <b>[TWÓJ KOLOR 2]</b>
+Brand name at bottom: <b>[TWOJA MARKA / @INSTAGRAM]</b>
+
+Style: flat design, readable fonts (min 24pt), icons for each point, white or very light background.
+Format: vertical 1080×1350px. No gradients. Professional, clean, minimal.</pre>
+    </div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Temat infografiki: …  Efekt: dobry / wymaga poprawki  Poprawki: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- TOOLS -->
+<section style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:20px">
+  <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;color:var(--ink);margin-bottom:12px">🔗 Wszystkie narzędzia dnia</h2>
+  <div class="tgrid">
+    <a class="tool" href="https://claude.ai" target="_blank"><b>Claude</b><span class="tu">claude.ai</span><p>Najlepszy LLM do treści, UVP, analizy</p></a>
+    <a class="tool" href="https://chatgpt.com" target="_blank"><b>ChatGPT + GPT Image</b><span class="tu">chatgpt.com</span><p>GPT-4o: teksty + infografiki AI</p></a>
+    <a class="tool" href="https://www.canva.com" target="_blank"><b>Canva</b><span class="tu">canva.com</span><p>Grafiki, szablony, Magic Design</p></a>
+    <a class="tool" href="https://copilot.microsoft.com" target="_blank"><b>Microsoft Copilot</b><span class="tu">copilot.microsoft.com</span><p>DALL-E 3 za darmo — zdjęcia produktowe AI</p></a>
+    <a class="tool" href="https://www.veed.io" target="_blank"><b>VEED.IO</b><span class="tu">veed.io</span><p>Montaż wideo + auto napisy + Auto Cut</p></a>
+    <a class="tool" href="https://labs.google/flow" target="_blank"><b>Google Flow (Veo)</b><span class="tu">labs.google/flow</span><p>Klipy wideo AI z opisu tekstowego</p></a>
+    <a class="tool" href="https://elevenlabs.io" target="_blank"><b>ElevenLabs</b><span class="tu">elevenlabs.io</span><p>Głos AI po polsku + klonowanie głosu</p></a>
+    <a class="tool" href="https://gamma.app" target="_blank"><b>Gamma</b><span class="tu">gamma.app</span><p>Prezentacje i karuzele z AI</p></a>
+  </div>
+</section>
+
+</div><!-- end p4 -->
+
+<div class="actions">
+  <button class="btn bp" id="dlBtn">⬇️ Pobierz moje notatki (.txt)</button>
+  <button class="btn bg" id="rstBtn">Wyczyść postęp</button>
+</div>
+
+</main>
+
+<footer>
+  <div class="fi">
+    <span><b>Energia dla Biznesu</b> · Nowoczesny Marketing z AI</span>
+    <span>Prowadzący: <b>Matsvei Dzmitryieu</b> · <span class="o">⚡</span> 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var PFX="edb-nmai-";
+var mem={};
+var S={
+  get:function(k){try{return localStorage.getItem(k)}catch(e){return mem[k]||null}},
+  set:function(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}},
+  del:function(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}
+};
+
+// Glossary
+var gBtn=document.getElementById("gBtn");
+var gPanel=document.getElementById("gPanel");
+var gClose=document.getElementById("gClose");
+function openG(){gPanel.classList.add("open");gBtn.style.display="none"}
+function closeG(){gPanel.classList.remove("open");gBtn.style.display="flex"}
+gBtn.addEventListener("click",openG);
+gClose.addEventListener("click",closeG);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeG()});
+
+// Glossary search
+var gSrch=document.getElementById("gSearch");
+var gNoRes=document.getElementById("gNoResult");
+var gQEl=document.getElementById("gQ");
+if(gSrch){
+  gSrch.addEventListener("input",function(){
+    var q=this.value.toLowerCase().trim();
+    var items=Array.prototype.slice.call(document.querySelectorAll(".gItem"));
+    var anyVisible=false;
+    items.forEach(function(item){
+      var match=!q||item.textContent.toLowerCase().indexOf(q)!==-1;
+      item.style.display=match?"":"none";
+      if(match)anyVisible=true;
+    });
+    var secs=Array.prototype.slice.call(document.querySelectorAll(".gSec"));
+    secs.forEach(function(sec){
+      if(!q){sec.style.display="";return}
+      var el=sec.nextElementSibling;var vis=false;
+      while(el&&!el.classList.contains("gSec")){if(el.style.display!=="none")vis=true;el=el.nextElementSibling}
+      sec.style.display=vis?"":"none";
+    });
+    if(gNoRes&&gQEl){gQEl.textContent=q;gNoRes.style.display=(!anyVisible&&q)?"block":"none"}
+  });
+}
+
+// Tabs
+var tabs=Array.prototype.slice.call(document.querySelectorAll(".tab"));
+tabs.forEach(function(tab){
+  tab.addEventListener("click",function(){
+    tabs.forEach(function(t){t.classList.remove("on")});
+    document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on")});
+    tab.classList.add("on");
+    document.getElementById(tab.dataset.panel).classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+
+// Progress
+var steps=Array.prototype.slice.call(document.querySelectorAll("[data-step]"));
+document.getElementById("tc").textContent=steps.length;
+function refresh(){
+  var done=steps.filter(function(s){return s.checked}).length;
+  var pct=steps.length?Math.round(done/steps.length*100):0;
+  document.getElementById("dc").textContent=done;
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("bf").style.width=pct+"%";
+  document.querySelectorAll(".cw[data-cw]").forEach(function(cw){
+    var ss=cw.querySelectorAll("[data-step]"),all=ss.length>0;
+    ss.forEach(function(x){if(!x.checked)all=false});
+    cw.classList.toggle("done",all);
+  });
+}
+steps.forEach(function(s,i){
+  if(S.get(PFX+"s"+i)==="1")s.checked=true;
+  s.addEventListener("change",function(){S.set(PFX+"s"+i,s.checked?"1":"0");refresh()});
+});
+
+// Notes autosave
+var notes=Array.prototype.slice.call(document.querySelectorAll("[data-notes]"));
+notes.forEach(function(n,i){
+  var sv=S.get(PFX+"n"+i);if(sv)n.value=sv;
+  var badge=n.parentElement.querySelector(".sv");var t=null;
+  n.addEventListener("input",function(){
+    S.set(PFX+"n"+i,n.value);
+    if(badge){badge.classList.add("s");clearTimeout(t);t=setTimeout(function(){badge.classList.remove("s")},1200)}
+  });
+});
+
+// Copy prompts
+function copyTxt(txt,btn){
+  function ok(){var o=btn.textContent;btn.textContent="✓ Skopiowano";btn.classList.add("cp");setTimeout(function(){btn.textContent=o;btn.classList.remove("cp")},1600)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,lg)}else{lg()}
+  function lg(){var ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok()}catch(e){}document.body.removeChild(ta)}
+}
+document.querySelectorAll("[data-copy]").forEach(function(btn){
+  btn.addEventListener("click",function(){copyTxt(btn.closest(".prom").querySelector("pre").textContent.trim(),btn)});
+});
+
+// Download notes
+var titles=["Notatki z wideo (M1 wstęp)","1A — UVP","1B — Bio","1C — Analiza konkurencji","2A — 7 tematów","2B — 3 posty","2C — Newsletter","2D — Reels + Gamma","3A — VEED.IO montaż","3B — ElevenLabs","3C — Flow AI","4A — Zdjęcie produktu","4B — Zestaw grafik","4C — Infografika"];
+document.getElementById("dlBtn").addEventListener("click",function(){
+  var out="NOWOCZESNY MARKETING Z AI — moje notatki\nEnergia dla Biznesu · "+new Date().toLocaleDateString("pl-PL")+"\n\n";
+  notes.forEach(function(n,i){out+="=== "+(titles[i]||"Notatki "+(i+1))+" ===\n"+(n.value.trim()||"(pusto)")+"\n\n"});
+  var blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="notatki-marketing-ai.txt";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
+});
+
+// Reset
+document.getElementById("rstBtn").addEventListener("click",function(){
+  if(!confirm("Wyczyścić wszystkie odhaczone kroki i notatki?"))return;
+  steps.forEach(function(s,i){s.checked=false;S.del(PFX+"s"+i)});
+  notes.forEach(function(n,i){n.value="";S.del(PFX+"n"+i)});
+  refresh();
+});
+
+refresh();
+})();
+</script>
+</body>
+</html>
